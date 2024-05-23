@@ -12,8 +12,9 @@ with open("metadata.json", "r") as file:
 def get_img():
     # Args
     api_format = request.args.get("format")
-    api_proxy = request.args.get("proxy")
+    api_nsfw = request.args.get("r18", default = "0")
 
+    # Get random data
     random_data = loaded_data[random.randint(0,len(loaded_data) - 1)]
     image_url_proxy = re.sub(r'pximg\.net', 'pixiv.re', random_data["image_urls"]["large"])
 
@@ -28,10 +29,20 @@ def get_img():
                     "id" : random_data["user"]["id"],
                     "account" : random_data["user"]["account"],
                 },
-                "tags" : random_data["tags"]
+                "tags" : random_data["tags"],
+                "r18" : random_data["x_restrict"],
             },
             }
 
+    # Filter r18 tag
+    if api_nsfw == "0" and random_data["x_restrict"] == 1:
+        return get_img()
+    if api_nsfw == "1" and random_data["x_restrict"] == 0:
+        return get_img()
+    else:
+        pass
+
+    # Return different formats
     if api_format == "json":
         return jsonify(data)
 
