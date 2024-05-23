@@ -28,6 +28,7 @@ def get_img():
                     "id" : random_data["user"]["id"],
                     "account" : random_data["user"]["account"],
                 },
+                "tags" : random_data["tags"]
             },
             }
 
