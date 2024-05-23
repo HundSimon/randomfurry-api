@@ -69,5 +69,5 @@ append_json("metadata.json", get_bookmark_illusts())
 append_json("metadata.json", get_followed_illusts())
 
 # Remove irrelevant tagged contents
-tag_names = ["furry", "furry shota", "furry male", "beast", "Arknights"]
+tag_names = ["furry", "furry shota", "furry male", "beast", "kemono", "Arknights", "獣人", "獸", "兽人", "ケモノ"]
 remove_dicts_without_tags("metadata.json", tag_names)
