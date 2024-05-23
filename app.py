@@ -8,6 +8,12 @@ app = Flask(__name__)
 with open("metadata.json", "r") as file:
     loaded_data = json.load(file)
 
+with open("key.json", "r") as key:
+    key_loads = json.loads(key.read())
+    key_refresh_token = key_loads["refresh_token"]
+    key_illust = key_loads["user_bookmarks_illust"]
+    key_proxy_url = key_loads["proxy_url"]
+
 @app.route('/', methods=['GET'])
 def get_img():
     # Args
@@ -16,7 +22,8 @@ def get_img():
 
     # Get random data
     random_data = loaded_data[random.randint(0,len(loaded_data) - 1)]
-    image_url_proxy = re.sub(r'pximg\.net', 'pixiv.re', random_data["image_urls"]["large"])
+    image_url_proxy = re.sub(r'i\.pximg\.net', key_proxy_url, random_data["image_urls"]["large"])
+
 
     data = {
             "data" : {
