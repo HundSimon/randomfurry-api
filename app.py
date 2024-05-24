@@ -22,14 +22,24 @@ def get_img():
 
     # Get random data
     random_data = loaded_data[random.randint(0,len(loaded_data) - 1)]
-    image_url_proxy = re.sub(r'i\.pximg\.net', key_proxy_url, random_data["image_urls"]["large"])
 
+    # Image url with different sizes
+    if random_data["meta_single_page"] == {}:
+        if random_data["meta_pages"] == []:
+            image_url = random_data["image_urls"]["large"]
+        else:
+            image_url = random_data["meta_pages"][0]["image_urls"]["large"]
+    else:
+        image_url = random_data["meta_single_page"]["original_image_url"]
+
+
+    image_url_proxy = re.sub(r'i\.pximg\.net', key_proxy_url, image_url)
 
     data = {
             "data" : {
                 "id" : random_data["id"],
                 "title" : random_data["title"],
-                "image_url" : random_data["image_urls"]["large"],
+                "image_url" : image_url,
                 "image_url_proxy" : image_url_proxy,
                 "user" : {
                     "name" : random_data["user"]["name"],
