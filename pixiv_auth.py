@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+## From https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362
+
 from argparse import ArgumentParser
 from base64 import urlsafe_b64encode
 from hashlib import sha256
