@@ -64,9 +64,17 @@ def get_followed_illusts():
 	    print(api.illust_follow(**next_qs).next_url)
 	return merged_json
 
+def get_recommended_illusts():
+	merged_json = {}
+	json_result = api.illust_recommended(content_type="illust")
+	merged_json.update(json_result)
+	merged_json = merged_json["illusts"]
+	return merged_json
+
 # Save into one JSON file
 append_json("metadata.json", get_bookmark_illusts())
 append_json("metadata.json", get_followed_illusts())
+append_json("metadata.json", get_recommended_illusts())
 
 # Remove irrelevant tagged contents
 tag_names = ["furry", "furry shota", "furry male", "beast", "kemono", "Arknights", "獣人", "獸", "兽人", "ケモノ"]
