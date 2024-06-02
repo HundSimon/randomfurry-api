@@ -3,5 +3,8 @@
 	"access_token": "",
 	"refresh_token": "",
 	"user_bookmarks_illust": "",
-	"proxy_url": "i.pixiv.re"
+	"proxy_url": "i.pixiv.re",
+	"cloudflare_token": "",
+	"cloudflare_account_id": "",
+	"cloudflare_namespace_id": ""
 }
