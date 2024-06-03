@@ -1,12 +1,12 @@
 # randomfurry-api
 
-Returns furry images
-
 做着玩的
 
 ## 调用
 
 api 请求地址 GET `https://api.melaton.top/randomfurry/`
+
+metadata 地址 `https://static.melaton.top/randomfurry/metadata.json`
 
 Parameters:
 
@@ -21,6 +21,8 @@ Parameters:
 
 ## 部署
 
+### 本地部署
+
 1. 拉取仓库 `git clone https://github.com/HundSimon/randomfurry-api.git && cd randomfurry-api`
 
 2. 获取 refresh token `python3 pixiv_auth.py`
@@ -31,8 +33,20 @@ Parameters:
 
 5. (可选) gunicorn 部署 `gunicorn app:randomfurry-api -c gunicorn_config.py --reload`
 
+### Cloudflare Workers
+
+1. 创建 worker，复制 `worker/worker.js` 的代码
+
+2. 填写 `keyLoads` 的内容并部署
+
+3. 创建 kv，键名 `metadata`，worker 命名空间绑定 `CLOUDFLARE_KV_NAMESPACE` 到刚刚创建的 kv
+
+4. 更新 kv
+   
+   - (手动) 从`https://static.melaton.top/randomfurry/metadata.json` 获取 metadata并手动填写到 kv
+   
+   - (自动) 填写 `key.json` 的内容并运行 `scraper.py` , `worker/kv.py` 脚本进行更新
+
 ## Credit
 
 - pixivpy [Pixiv API for Python · GitHub](https://github.com/upbit/pixivpy)
-
-
