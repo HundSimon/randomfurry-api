@@ -78,5 +78,5 @@ with open("metadata.json", 'w') as new_metadata:
     json.dump(final_metadata, new_metadata, indent=4)
 
 # Remove irrelevant tagged contents
-tag_names = ["furry", "furry shota", "furry male", "beast", "kemono", "Arknights", "獣人", "獸", "兽人", "ケモノ", "竜人", "オスケモ"]
+tag_names = ["furry", "furry shota", "furry male", "beast", "kemono", "獣人", "獸", "兽人", "ケモノ", "竜人", "オスケモ"]
 remove_dicts_without_tags("metadata.json", tag_names)
