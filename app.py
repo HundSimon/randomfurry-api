@@ -54,9 +54,13 @@ async def get_img(request: Request):
     else:
         return JSONResponse(content=data)
 
-@app.get('/index/')
+@app.get('/index')
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get('/index18')
+async def index(request: Request):
+    return templates.TemplateResponse("index18.html", {"request": request})
 
 if __name__ == '__main__':
     import uvicorn
