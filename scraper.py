@@ -2,6 +2,7 @@ from pixivpy3 import *
 import json
 from requests import *
 from flask import jsonify
+from utils.format import format_json
 
 # Read secret
 with open("key.json", "r") as key:
@@ -19,14 +20,6 @@ def remove_duplicates(json_data):
     string_data = list(dict.fromkeys(string_data))
     json_data = [json.loads(s) for s in string_data]
     return json_data
-
-def append_json(file_path, new_data):
-    with open(file_path, 'r') as f:
-        existing_data = json.load(f)
-    existing_data.extend(new_data)
-    existing_data = remove_duplicates(existing_data)
-    with open(file_path, 'w') as f:
-        json.dump(existing_data, f, indent=4)
 
 def remove_dicts_without_tags(file_path, tag_names):
     with open(file_path, 'r') as f:
@@ -71,11 +64,19 @@ def get_recommended_illusts():
 	merged_json = merged_json["illusts"]
 	return merged_json
 
-# Save into one JSON file
-append_json("metadata.json", get_bookmark_illusts())
-append_json("metadata.json", get_followed_illusts())
-append_json("metadata.json", get_recommended_illusts())
+
+temp_metadata = []
+
+with open("metadata.json", "r", encoding="utf-8") as old_metadata:
+	final_metadata = json.load(old_metadata)
+	temp_metadata.extend(get_bookmark_illusts())
+	temp_metadata.extend(get_followed_illusts())
+	temp_metadata.extend(get_recommended_illusts())
+	final_metadata.extend(format_json(loaded_data=temp_metadata))
+
+with open("metadata.json", 'w') as new_metadata:
+    json.dump(final_metadata, new_metadata, indent=4)
 
 # Remove irrelevant tagged contents
-tag_names = ["furry", "furry shota", "furry male", "beast", "kemono", "Arknights", "獣人", "獸", "兽人", "ケモノ"]
+tag_names = ["furry", "furry shota", "furry male", "beast", "kemono", "Arknights", "獣人", "獸", "兽人", "ケモノ", "竜人", "オスケモ"]
 remove_dicts_without_tags("metadata.json", tag_names)

@@ -23,38 +23,23 @@ def get_img():
     # Get random data
     random_data = loaded_data[random.randint(0,len(loaded_data) - 1)]
 
-    # Image url with different sizes
-    if random_data["meta_single_page"] == {}:
-        if random_data["meta_pages"] == []:
-            image_url = random_data["image_urls"]["large"]
-        else:
-            image_url = random_data["meta_pages"][0]["image_urls"]["large"]
-    else:
-        image_url = random_data["meta_single_page"]["original_image_url"]
-
-
-    image_url_proxy = re.sub(r'i\.pximg\.net', key_proxy_url, image_url)
+    image_url_proxy = re.sub(r'i\.pximg\.net', key_proxy_url, random_data["url"])
 
     data = {
             "data" : {
-                "id" : random_data["id"],
-                "title" : random_data["title"],
-                "image_url" : image_url,
-                "image_url_proxy" : image_url_proxy,
-                "user" : {
-                    "name" : random_data["user"]["name"],
-                    "id" : random_data["user"]["id"],
-                    "account" : random_data["user"]["account"],
-                },
-                "tags" : random_data["tags"],
-                "r18" : random_data["x_restrict"],
-            },
-            }
+                "id": random_data["id"],
+                "title": random_data["title"],
+                "tags": random_data["tags"],
+                "url": random_data["url"],
+                "proxy_url": image_url_proxy,
+                "r18": random_data["r18"],
+                "user": random_data["user"]
+            }}
 
     # Filter r18 tag
-    if api_nsfw == "0" and random_data["x_restrict"] == 1:
+    if api_nsfw == "0" and random_data["r18"] == 1:
         return get_img()
-    if api_nsfw == "1" and random_data["x_restrict"] == 0:
+    if api_nsfw == "1" and random_data["r18"] == 0:
         return get_img()
     else:
         pass
