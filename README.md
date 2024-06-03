@@ -31,7 +31,7 @@ Parameters:
 
 4. 手动获取 metadata: `python3 scraper.py`
 
-5. (可选) gunicorn 部署 `gunicorn app:randomfurry-api -c gunicorn_config.py --reload`
+5. (可选) gunicorn 部署 `gunicorn app:app -c gunicorn_config.py --reload`
 
 ### Cloudflare Workers
 
