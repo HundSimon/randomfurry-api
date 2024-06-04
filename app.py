@@ -6,7 +6,6 @@ import random
 import re
 
 app = FastAPI()
-
 templates = Jinja2Templates(directory="templates")
 
 with open("metadata.json", "r") as file:
@@ -14,41 +13,36 @@ with open("metadata.json", "r") as file:
 
 with open("key.json", "r") as key:
     key_loads = json.loads(key.read())
-    key_refresh_token = key_loads["refresh_token"]
-    key_illust = key_loads["user_bookmarks_illust"]
     key_proxy_url = key_loads["proxy_url"]
 
 @app.get('/')
 async def get_img(request: Request):
-    # Args
     api_format = request.query_params.get("format")
-    api_nsfw = request.query_params.get("r18", default = "0")
+    api_nsfw = request.query_params.get("r18", default="0")
 
-    # Get random data
-    random_data = loaded_data[random.randint(0,len(loaded_data) - 1)]
-
+    random_index = random.randint(0, len(loaded_data) - 1)
+    random_data = loaded_data[random_index]
     image_url_proxy = re.sub(r'i\.pximg\.net', key_proxy_url, random_data["url"])
 
     data = {
-            "data" : {
-                "id": random_data["id"],
-                "title": random_data["title"],
-                "tags": random_data["tags"],
-                "url": random_data["url"],
-                "proxy_url": image_url_proxy,
-                "r18": random_data["r18"],
-                "user": random_data["user"]
-                },
-            "code": 200
-            }
+        "data": {
+            "id": random_data["id"],
+            "title": random_data["title"],
+            "tags": random_data["tags"],
+            "url": random_data["url"],
+            "proxy_url": image_url_proxy,
+            "r18": random_data["r18"],
+            "user": random_data["user"]
+        },
+        "code": 200,
+        "index": random_index
+    }
 
-    # Filter r18 tag
     if api_nsfw == "0" and random_data["r18"] == 1:
         return await get_img(request)
     if api_nsfw == "1" and random_data["r18"] == 0:
         return await get_img(request)
 
-    # Return different formats
     if api_format == "image":
         return RedirectResponse(url=image_url_proxy)
     else:
