@@ -10,24 +10,16 @@ async function handleRequest(request) {
     "access_token": "",
     "refresh_token": "",
     "user_bookmarks_illust": "",
-    "proxy_url": ""
+    "proxy_url": "i.pixiv.re"
   }  
 
   const apiFormat = new URL(request.url).searchParams.get("format")
   const apiNsfw = new URL(request.url).searchParams.get("r18") || "0"
 
-  const randomData = loadedData[Math.floor(Math.random() * loadedData.length)]
+  const randomIndex = Math.floor(Math.random() * loadedData.length)
+  const randomData = loadedData[randomIndex]
 
-  // Image URL with different sizes
-  let imageUrl
-  if (randomData.meta_single_page === {}) {
-    imageUrl = randomData.image_urls.large
-  } else if (randomData.meta_pages.length > 0) {
-    imageUrl = randomData.meta_pages[0].image_urls.large
-  } else {
-    imageUrl = randomData.meta_single_page.original_image_url
-  }
-
+  const imageUrl = randomData.url
   const imageProxyUrl = imageUrl.replace(/i\.pximg\.net/, keyLoads.proxy_url)
 
   const data = {
@@ -35,19 +27,21 @@ async function handleRequest(request) {
       id: randomData.id,
       title: randomData.title,
       image_url: imageUrl,
-      image_url_proxy: imageProxyUrl,
+      proxy_url: imageProxyUrl,
       user: {
         name: randomData.user.name,
         id: randomData.user.id,
         account: randomData.user.account,
       },
       tags: randomData.tags,
-      r18: randomData.x_restrict,
+      r18: randomData.r18,
     },
+    code: 200,
+    index: randomIndex
   }
 
   // Filter r18 tag
-  if ((apiNsfw === "0" && randomData.x_restrict === 1) || (apiNsfw === "1" && randomData.x_restrict === 0)) {
+  if ((apiNsfw === "0" && randomData.r18 === 1) || (apiNsfw === "1" && randomData.r18 === 0)) {
     return handleRequest(request) // Retry to get a suitable image
   }
 
