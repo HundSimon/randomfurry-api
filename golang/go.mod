@@ -1,6 +1,6 @@
 module randomfurry-api/app
 
-go 1.21.4
+go 1.22.4
 
 require (
 	github.com/emicklei/go-restful v2.16.0+incompatible // indirect
